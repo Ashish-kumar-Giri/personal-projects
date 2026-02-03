@@ -45,7 +45,8 @@
     }
 
     button {
-      padding: 14px 26px;
+      width: 120px;              /* ⭐ SAME WIDTH */
+      padding: 14px 0;           /* ⭐ uniform padding */
       font-size: 16px;
       border-radius: 30px;
       border: none;
@@ -119,14 +120,12 @@
     const card = document.getElementById("card");
     const music = document.getElementById("music");
 
-    /* Try to auto-play music after 3 seconds */
+    // Try autoplay after 3 seconds
     setTimeout(() => {
-      music.play().catch(() => {
-        console.log("Autoplay blocked – user interaction needed");
-      });
+      music.play().catch(() => {});
     }, 3000);
 
-    /* NO button dodges inside the card */
+    // NO button dodges inside card
     function dodgeNo() {
       const container = document.querySelector(".buttons");
 
@@ -145,7 +144,7 @@
     noBtn.addEventListener("mouseover", dodgeNo);
     noBtn.addEventListener("touchstart", dodgeNo);
 
-    /* YES action */
+    // YES action
     yesBtn.addEventListener("click", () => {
       card.innerHTML = `
         <div class="success">
@@ -159,7 +158,7 @@
       music.play();
     });
 
-    /* Floating hearts */
+    // Floating hearts
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
