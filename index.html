@@ -41,7 +41,7 @@
 
     .buttons {
       position: relative;
-      height: 90px;
+      height: 100px;
     }
 
     button {
@@ -56,6 +56,9 @@
     #yes {
       background: #e63946;
       color: white;
+      position: absolute;
+      left: 20px;
+      top: 30px;
     }
 
     #yes:hover {
@@ -65,19 +68,8 @@
     #no {
       background: #ccc;
       position: absolute;
-      left: 200px;
-      top: 10px;
-    }
-
-    .music-btn {
-      margin-top: 15px;
-      background: #ff7eb3;
-      color: white;
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
+      right: 20px;
+      top: 30px;
     }
 
     .success {
@@ -99,24 +91,11 @@
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-110vh); opacity: 0; }
     }
-
-    /* Confetti */
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      animation: fall 3s linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-10px); }
-      100% { transform: translateY(100vh); }
-    }
   </style>
 </head>
 <body>
 
-  <!-- YOUR SONG -->
+  <!-- Music -->
   <audio id="music" loop>
     <source src="die_with_a_smile.mp3" type="audio/mpeg">
   </audio>
@@ -132,8 +111,6 @@
       <button id="yes">YES 💕</button>
       <button id="no">NO 🙈</button>
     </div>
-
-    <button class="music-btn" onclick="playMusic()">Tap to play our song 🎵</button>
   </div>
 
   <script>
@@ -142,22 +119,17 @@
     const card = document.getElementById("card");
     const music = document.getElementById("music");
 
-    let noTries = 0;
+    /* Try to auto-play music after 3 seconds */
+    setTimeout(() => {
+      music.play().catch(() => {
+        console.log("Autoplay blocked – user interaction needed");
+      });
+    }, 3000);
 
+    /* NO button dodges inside the card */
     function dodgeNo() {
-      noTries++;
-
-      // After 5 tries, NO becomes YES 😈
-      if (noTries >= 5) {
-        noBtn.innerText = "YES 💕";
-        noBtn.style.background = "#e63946";
-        noBtn.style.color = "white";
-        noBtn.style.transform = "rotate(0deg)";
-        noBtn.onclick = yesAction;
-        return;
-      }
-
       const container = document.querySelector(".buttons");
+
       const maxX = container.clientWidth - noBtn.offsetWidth;
       const maxY = container.clientHeight - noBtn.offsetHeight;
 
@@ -173,27 +145,21 @@
     noBtn.addEventListener("mouseover", dodgeNo);
     noBtn.addEventListener("touchstart", dodgeNo);
 
-    function yesAction() {
+    /* YES action */
+    yesBtn.addEventListener("click", () => {
       card.innerHTML = `
         <div class="success">
           YAYYYY!!! 💖🥰<br><br>
-          Walling, you just made my heart so full ❤️<br><br>
-          If I had one wish, it would be to choose you every day 💕<br><br>
+          Walling, you just made my heart smile ❤️<br><br>
+          Every day with you is my favorite day 💕<br><br>
           Forever yours,<br>
           <strong>Ashish 😘</strong>
         </div>
       `;
-      startConfetti();
       music.play();
-    }
+    });
 
-    yesBtn.addEventListener("click", yesAction);
-
-    function playMusic() {
-      music.play();
-    }
-
-    // Floating hearts
+    /* Floating hearts */
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -203,19 +169,6 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 6000);
     }, 300);
-
-    // Confetti
-    function startConfetti() {
-      for (let i = 0; i < 120; i++) {
-        const conf = document.createElement("div");
-        conf.className = "confetti";
-        conf.style.left = Math.random() * 100 + "vw";
-        conf.style.background = ["#e63946","#ff7eb3","#ffd166"][Math.floor(Math.random()*3)];
-        conf.style.animationDuration = (2 + Math.random() * 3) + "s";
-        document.body.appendChild(conf);
-        setTimeout(() => conf.remove(), 4000);
-      }
-    }
   </script>
 
 </body>
