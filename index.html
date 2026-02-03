@@ -23,7 +23,7 @@
       border-radius: 25px;
       text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-      max-width: 350px;
+      max-width: 360px;
       z-index: 2;
     }
 
@@ -39,13 +39,13 @@
     }
 
     button {
-      padding: 14px 24px;
+      padding: 14px 26px;
       font-size: 16px;
       border-radius: 30px;
       border: none;
       cursor: pointer;
       margin: 10px;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     #yes {
@@ -59,6 +59,7 @@
 
     #no {
       background: #ccc;
+      position: absolute;
     }
 
     .success {
@@ -74,6 +75,7 @@
       font-size: 20px;
       animation: floatUp 6s linear infinite;
       opacity: 0.8;
+      z-index: 1;
     }
 
     @keyframes floatUp {
@@ -90,11 +92,6 @@
 </head>
 <body>
 
-  <!-- Background Music -->
-  <audio autoplay loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  </audio>
-
   <div class="card" id="card">
     <h1>Walling 💖</h1>
     <p>
@@ -110,30 +107,37 @@
     const yesBtn = document.getElementById("yes");
     const card = document.getElementById("card");
 
-    let scale = 1;
+    // Make NO button dodge & rotate (unclickable)
+    function dodgeNo() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+      const rotation = Math.random() * 60 - 30;
 
-    noBtn.addEventListener("click", () => {
-      scale -= 0.15;
-      noBtn.style.transform = `scale(${scale})`;
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      noBtn.style.transform = `rotate(${rotation}deg)`;
+    }
 
-      if (scale <= 0.4) {
-        noBtn.innerText = "Okay okay 😅";
-      }
-    });
+    // Desktop
+    noBtn.addEventListener("mouseover", dodgeNo);
 
+    // Mobile
+    noBtn.addEventListener("touchstart", dodgeNo);
+
+    // YES button
     yesBtn.addEventListener("click", () => {
       card.innerHTML = `
         <div class="success">
           YAYYYY!!! 💖🥰<br><br>
           Walling, you just made me the happiest person ever ❤️<br><br>
-          I can’t wait to create a million memories with you 💕<br>
+          Every smile of yours is my favorite thing in the world 💕<br><br>
           Forever yours,<br>
           <strong>Ashish 😘</strong>
         </div>
       `;
     });
 
-    /* Floating hearts generator */
+    // Floating hearts generator
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -142,9 +146,7 @@
       heart.style.fontSize = (15 + Math.random() * 20) + "px";
       document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 6000);
+      setTimeout(() => heart.remove(), 6000);
     }, 300);
   </script>
 
